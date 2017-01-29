@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UDQueryWeb", "UDQueryWeb\UDQueryWeb.csproj", "{43222E7A-E895-4A19-9C3F-0B75426BF1D6}"
+EndProject
+Project("{A0786B88-2ADB-4C21-ABE8-AA2D79766269}") = "UDQueryWeb-PHPLibrary", "UDQueryWeb-PHPLibrary\UDQueryWeb-PHPLibrary.phpproj", "{EC6E0FC3-816D-495C-A98B-9C3A7ED2029B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,8 @@ Global
 		{43222E7A-E895-4A19-9C3F-0B75426BF1D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43222E7A-E895-4A19-9C3F-0B75426BF1D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43222E7A-E895-4A19-9C3F-0B75426BF1D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC6E0FC3-816D-495C-A98B-9C3A7ED2029B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC6E0FC3-816D-495C-A98B-9C3A7ED2029B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
