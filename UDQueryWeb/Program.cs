@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Net;
 using System.Text;
@@ -122,9 +122,40 @@ namespace UDQueryWeb
                     string query = vars["query"].ToString();
                     // Fields
                     string[] fields = vars["fields"].ToString().Split('|');
+                    // I-type fields
+                    List<string> iFields = new List<string>();
+                    // Other fields
+                    List<string> otherFields = new List<string>();
+
+                    // Process the fields
+                    foreach(string fRaw in fields)
+                    {
+                        string[] fieldType = fRaw.Split('#');
+                        if(fieldType.Length > 1)
+                        {
+                            switch(fieldType[1].ToLower())
+                            {
+                                case "i":
+                                    iFields.Add(fieldType[0]);
+                                    break;
+                                default:
+                                    otherFields.Add(fieldType[0]);
+                                    break;
+                            }
+                        } else
+                        {
+                            otherFields.Add(fieldType[0]);
+                        }
+                    }
 
                     // Output to console
                     Console.WriteLine("XML client connected! Server: " + server + ", Query: " + query);
+
+                    // I-type records need some investigation...
+                    if (iFields.Count > 0)
+                    {
+                        Console.WriteLine("Warning: I-type fields are currently ignored!");
+                    }
 
                     // Connect to unidata database
                     UniSession uniSes = UniObjects.OpenSession(server, username, password, path);
@@ -146,7 +177,6 @@ namespace UDQueryWeb
 
                     if (responseRaw.Trim().Length > 0)
                     {
-
                         // Get IDs returned from above query
                         string[] ids = responseRaw.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -156,19 +186,29 @@ namespace UDQueryWeb
                         {
                             if (id.Trim().Length > 0)
                             {
-                                string[] checkID = id.Trim().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                                if (checkID.Length > 1)
+                                if (id.Trim().Split(' ').Length == 1)
                                 {
-                                    cleanIDs.Add(checkID[1].Trim());
-                                } else
-                                {
-                                    cleanIDs.Add(id.Trim());
+                                    string[] checkID = id.Trim().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                                    string cleanedID = null;
+                                    if (checkID.Length > 1)
+                                    {
+                                        cleanedID = checkID[1].Trim();
+                                    }
+                                    else
+                                    {
+                                        cleanedID = id.Trim();
+                                    }
+                                    if (!cleanIDs.Contains(cleanedID))
+                                    {
+                                        cleanIDs.Add(cleanedID);
+                                    }
                                 }
                             }
                         }
 
                         // Fetch data from UniData
-                        UniDataSet ds = uniFile.ReadRecords(cleanIDs.ToArray(), fields);
+                        UniDataSet ds = uniFile.ReadRecords(cleanIDs.ToArray(), otherFields.ToArray());
+                        Console.WriteLine("\tSending " + ds.RowCount + " records to client...");
                         if (ds.RowCount > 0)
                         {
                             foreach (UniRecord record in ds)
@@ -230,7 +270,7 @@ namespace UDQueryWeb
                     // Send error, no config supplied
                     response.Append("<response>error</response><query /><message>" + ex.Message + "</message>");
                     // Output to console
-                    Console.WriteLine("Error: " + ex.Message);
+                    Console.WriteLine("Query Error: " + ex.Message);
                 }
             }
             else
