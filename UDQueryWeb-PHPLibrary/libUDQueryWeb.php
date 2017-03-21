@@ -178,7 +178,7 @@ class libUDQueryWeb
         	$fieldsProcessed = array();
         	foreach($dictionary as $field)
         	{
-        		$fieldsProcessed[] = $field["key"];
+        		$fieldsProcessed[] = $field["key"]."#".$field["type"];
         	}
         	
         	// Clean the query
