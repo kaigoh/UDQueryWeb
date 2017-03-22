@@ -57,7 +57,7 @@ namespace UDQueryWeb
                     string query = vars["query"].ToString();
 
                     // Output to console
-                    Console.WriteLine("Raw client connected! Server: " + server + ", Query: " + query);
+                    Console.WriteLine("Raw client connected! Server: " + server + "\r\n\tQuery: " + query);
 
                     // Connect to unidata database
                     UniSession uniSes = UniObjects.OpenSession(server, username, password, path);
@@ -149,13 +149,7 @@ namespace UDQueryWeb
                     }
 
                     // Output to console
-                    Console.WriteLine("XML client connected! Server: " + server + ", Query: " + query);
-
-                    // I-type records need some investigation...
-                    if (iFields.Count > 0)
-                    {
-                        Console.WriteLine("Warning: I-type fields are currently ignored!");
-                    }
+                    Console.WriteLine("XML client connected! Server: " + server + "\r\n\tQuery: " + query);
 
                     // Connect to unidata database
                     UniSession uniSes = UniObjects.OpenSession(server, username, password, path);
@@ -238,6 +232,24 @@ namespace UDQueryWeb
                                         }
                                         row.Columns.Add(column);
                                     }
+                                    if(iFields.Count > 0)
+                                    {
+                                        try
+                                        {
+                                            foreach (string iField in iFields)
+                                            {
+                                                UDQueryKeyValue iColumn = new UDQueryKeyValue();
+                                                UniDynArray iTypeArray = uniFile.iType(record.RecordID, iField);
+                                                iColumn.Key = iField;
+                                                iColumn.Value = iTypeArray.StringValue;
+                                                row.Columns.Add(iColumn);
+                                            }
+                                        }
+                                        catch
+                                        {
+                                            Console.WriteLine("Error extracting iType field from record!");
+                                        }
+                                    }
                                     uds.Records.Add(row);
                                 }
                                 catch(Exception recordEx)
@@ -282,6 +294,7 @@ namespace UDQueryWeb
                 Console.WriteLine("Error: Config and query not supplied");
             }
             response.Append("</udqueryweb>");
+
             return response.ToString();
         }
 
