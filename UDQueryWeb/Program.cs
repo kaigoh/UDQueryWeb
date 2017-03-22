@@ -239,7 +239,7 @@ namespace UDQueryWeb
                                             foreach (string iField in iFields)
                                             {
                                                 UDQueryKeyValue iColumn = new UDQueryKeyValue();
-                                                UniDynArray iTypeArray = uniFile.iType(record.RecordID, iField);
+                                                UniDynArray iTypeArray = uniFile.ReadNamedField(record.RecordID, iField);
                                                 iColumn.Key = iField;
                                                 iColumn.Value = iTypeArray.StringValue;
                                                 row.Columns.Add(iColumn);
