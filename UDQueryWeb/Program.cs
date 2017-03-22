@@ -76,7 +76,7 @@ namespace UDQueryWeb
                     uniSes.Dispose();
 
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     // Send error, no config supplied
                     response.Append("<response>error</response><query /><message>" + ex.Message + "</message>");
@@ -128,12 +128,12 @@ namespace UDQueryWeb
                     List<string> otherFields = new List<string>();
 
                     // Process the fields
-                    foreach(string fRaw in fields)
+                    foreach (string fRaw in fields)
                     {
                         string[] fieldType = fRaw.Split('#');
-                        if(fieldType.Length > 1)
+                        if (fieldType.Length > 1)
                         {
-                            switch(fieldType[1].ToLower())
+                            switch (fieldType[1].ToLower())
                             {
                                 case "i":
                                     iFields.Add(fieldType[0]);
@@ -142,7 +142,8 @@ namespace UDQueryWeb
                                     otherFields.Add(fieldType[0]);
                                     break;
                             }
-                        } else
+                        }
+                        else
                         {
                             otherFields.Add(fieldType[0]);
                         }
@@ -163,7 +164,7 @@ namespace UDQueryWeb
                     uniCmd.Execute();
 
                     // Clean up the response
-                    string responseRaw = uniCmd.Response.Replace(file, "");
+                    string responseRaw = uniCmd.Response.Replace(file, "").Replace(file.Replace('_', '.'), "");
 
                     // Create UDQueryDataset
                     UDQueryDataset uds = new UDQueryDataset();
@@ -232,7 +233,7 @@ namespace UDQueryWeb
                                         }
                                         row.Columns.Add(column);
                                     }
-                                    if(iFields.Count > 0)
+                                    if (iFields.Count > 0)
                                     {
                                         try
                                         {
@@ -252,7 +253,7 @@ namespace UDQueryWeb
                                     }
                                     uds.Records.Add(row);
                                 }
-                                catch(Exception recordEx)
+                                catch (Exception recordEx)
                                 {
                                     // Output to console
                                     Console.WriteLine("Record error: " + recordEx.Message);
