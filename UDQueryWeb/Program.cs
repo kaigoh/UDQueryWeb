@@ -216,12 +216,13 @@ namespace UDQueryWeb
                                 try
                                 {
                                     UDQueryRecord row = new UDQueryRecord();
+                                    string[] otherFieldsClean = otherFields.ToArray();
                                     row.ID = record.RecordID;
                                     row.Columns = new List<UDQueryKeyValue>();
-                                    for (int i = 1; i <= fields.Length; i++)
+                                    for (int i = 1; i <= otherFieldsClean.Length; i++)
                                     {
                                         UDQueryKeyValue column = new UDQueryKeyValue();
-                                        column.Key = fields[i - 1];
+                                        column.Key = otherFieldsClean[i - 1];
                                         if (record.Record.Count(i) > 1)
                                         {
                                             List<string> mvalues = new List<string>();

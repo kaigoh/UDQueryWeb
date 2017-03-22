@@ -41,9 +41,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="UODOTNET, Version=2.170.0.7433, Culture=neutral, PublicKeyToken=335f3fbd4be82339, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\UODOTNET.dll</HintPath>
+    <Reference Include="UODOTNET">
+      <HintPath>.\UODOTNET.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
